@@ -1,5 +1,6 @@
 let mongoose = require("mongoose");
-
+//使用新版的索引器
+mongoose.set('useCreateIndex', true)
 //定义数据库名
 const DB_NAME = 'demo';
 
@@ -59,12 +60,47 @@ let dbPromise = new Promise((resolve, reject) => {
     //创建模型对象 把studentschema的规则告诉schema 
 
     //第一个参数与数据库中的集合相对应 第二个参数指定约束对象的实例
-    let studentModel = mongoose.model('students', studentSchema);
+    //只要生成了模板对象 就能进行数据是增删查改
+
+    let studentModel = mongoose.model('students', studentSchema);//获取students集合/如果没有就创建 
+    //并把studentSchema约束赋予students的文档
+
     //操作数据库
-    
+
+    /* 插入数据 */
+
+    /*     studentModel.create(student02, (err, data) => {
+            if (err)
+                console.log(err);
+            else console.log("插入成功!")
+        }
+        ) */
+    studentModel.find({ age: 22 }, (err, data) => {
+        if (err)
+            console.log(err);
+        else
+            console.log(data)
+    })
+
 }).catch((err) => {
     console.log(err)
 });
+/* let student01 = {
+    stu_id: "20190824001",
+    name: "简自豪",
+    age: "22",
+    sex: "男",
+    hobby: ["薇恩", "洗澡", "吃资源"],
+    info: "龙不吟虎不啸，灯笼不简可笑可笑",
+} */
+let student02 = {
+    stu_id: "20190824003",
+    name: "王柳羿",
+    age: "20",
+    sex: "男",
+    hobby: ["宠粉", "植树", "吃拌面"],
+    info: "蓝公主生日快乐",
+}
 /*
 !(async()=>{
     await dbPromise
